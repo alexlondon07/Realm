@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import io.github.alexlondon07.realm.models.Board;
 import io.github.alexlondon07.realm.models.Note;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
@@ -23,10 +24,22 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        setUpRealmConfig();
+
         Realm realm = Realm.getDefaultInstance();
         BoardID = getIdByTable(realm, Board.class);
         NoteID = getIdByTable(realm, Note.class);
         realm.close();
+    }
+
+    private void setUpRealmConfig(){
+
+        // create your Realm configuration
+        RealmConfiguration config = new RealmConfiguration
+                 .Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 
     /**
