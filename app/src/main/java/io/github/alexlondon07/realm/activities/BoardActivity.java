@@ -1,9 +1,11 @@
-package io.github.alexlondon07.realm;
+package io.github.alexlondon07.realm.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class BoarActivity extends AppCompatActivity {
+import io.github.alexlondon07.realm.R;
+
+public class BoardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
