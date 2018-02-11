@@ -2,6 +2,7 @@ package io.github.alexlondon07.realm.models;
 
 import java.util.Date;
 
+import io.github.alexlondon07.realm.app.MyApplication;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -25,7 +26,7 @@ public class Board extends RealmObject {
     private RealmList<Note> notes;
 
     public Board(String title) {
-        this.id = 0;
+        this.id = MyApplication.BoardID.incrementAndGet();
         this.title = title;
         this.notes = new RealmList<>();
         this.createAt = new Date();

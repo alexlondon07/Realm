@@ -2,6 +2,7 @@ package io.github.alexlondon07.realm.models;
 
 import java.util.Date;
 
+import io.github.alexlondon07.realm.app.MyApplication;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
@@ -25,7 +26,7 @@ public class Note extends RealmObject {
     }
 
     public Note(String description) {
-        this.id = 0;
+        this.id = MyApplication.NoteID.incrementAndGet();
         this.description = description;
         this.createAt = new Date();
     }
