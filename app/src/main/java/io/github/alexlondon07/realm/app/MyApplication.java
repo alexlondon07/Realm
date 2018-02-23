@@ -32,14 +32,17 @@ public class MyApplication extends Application {
         realm.close();
     }
 
-    private void setUpRealmConfig(){
+    public void setUpRealmConfig(){
 
         // create your Realm configuration
+        Realm.init(this);
         RealmConfiguration config = new RealmConfiguration
                  .Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
+
+
     }
 
     /**
