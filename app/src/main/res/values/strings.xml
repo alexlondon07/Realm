@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Realm</string>
     <string name="BoadTitle">Board Title</string>
+    <string name="NoteTitle">Type a Note</string>
 </resources>
