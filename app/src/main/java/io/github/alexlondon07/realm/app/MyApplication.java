@@ -32,7 +32,7 @@ public class MyApplication extends Application {
         realm.close();
     }
 
-    public void setUpRealmConfig(){
+    private void setUpRealmConfig(){
 
         // create your Realm configuration
         Realm.init(this);
@@ -41,8 +41,6 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
-
-
     }
 
     /**

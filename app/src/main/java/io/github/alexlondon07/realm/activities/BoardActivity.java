@@ -12,14 +12,19 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import io.github.alexlondon07.realm.R;
+import io.github.alexlondon07.realm.adapters.BoardAdapter;
 import io.github.alexlondon07.realm.models.Board;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class BoardActivity extends AppCompatActivity {
 
+    private Realm realm;
+
     private FloatingActionButton fab;
     private ListView listView;
-    private Realm realm;
+    private BoardAdapter boardAdapter;
+    private RealmResults<Board> boards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,11 @@ public class BoardActivity extends AppCompatActivity {
 
         //DB Realm
         realm = Realm.getDefaultInstance();
+        boards = realm.where(Board.class).findAll();
+
+        boardAdapter = new BoardAdapter(this, boards, R.layout.list_view_board);
+        listView = findViewById(R.id.listViewBoard);
+        listView.setAdapter(boardAdapter);
 
         loadView();
     }
@@ -50,15 +60,16 @@ public class BoardActivity extends AppCompatActivity {
      *
      * @param boardName
      */
-    private void createNewBoard(final String boardName) {
+    private void createNewBoard(String boardName) {
 
         realm.beginTransaction();
         Board board = new Board(boardName);
         realm.copyToRealm(board);
         realm.commitTransaction();
 
-        //Cuando son acciones muy grandes
-        /*realm.executeTransaction(new Realm.Transaction() {
+        /*
+        Cuando son acciones muy grandes
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 Board board = new Board(boardName);

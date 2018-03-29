@@ -20,7 +20,7 @@ public class Note extends RealmObject {
     private String description;
 
     @Required
-    private Date createAt;
+    private Date createdAt;
 
     public Note() {
     }
@@ -28,7 +28,7 @@ public class Note extends RealmObject {
     public Note(String description) {
         this.id = MyApplication.NoteID.incrementAndGet();
         this.description = description;
-        this.createAt = new Date();
+        this.createdAt = new Date();
     }
 
     public int getId() {
@@ -43,7 +43,7 @@ public class Note extends RealmObject {
         this.description = description;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }
