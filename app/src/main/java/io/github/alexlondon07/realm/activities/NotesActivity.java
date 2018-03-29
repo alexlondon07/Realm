@@ -16,10 +16,10 @@ import io.github.alexlondon07.realm.adapters.NoteAdapter;
 import io.github.alexlondon07.realm.models.Board;
 import io.github.alexlondon07.realm.models.Note;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmList;
 
-public class NotesActivity extends AppCompatActivity {
-
+public class NotesActivity extends AppCompatActivity  implements RealmChangeListener<Board>{
 
     private ListView listView;
     private FloatingActionButton fab;
@@ -43,23 +43,30 @@ public class NotesActivity extends AppCompatActivity {
             //Buscamos la Informacion con el Identificador del Board
             board = realm.where(Board.class).equalTo("id", boardId).findFirst();
 
-            //Obtemos todas las notas
-            notes = board.getNotes();
+            loadView();
 
-            this.setTitle(board.getTitle());
+    }
 
+    private void loadView() {
 
-            listView = findViewById(R.id.listViewNote);
-            adapter = new NoteAdapter(this, notes , R.layout.list_view_note_item);
-            listView.setAdapter(adapter);
+        board.addChangeListener(this);
 
-            fab = findViewById(R.id.floatActionButtonAddNote);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showAlertForCreatingNote("Add new Note", "Type a note for " + board.getTitle() + ".");
-                }
-            });
+        //Obtemos todas las notas
+        notes = board.getNotes();
+
+        this.setTitle(board.getTitle());
+
+        listView = findViewById(R.id.listViewNote);
+        adapter = new NoteAdapter(this, notes , R.layout.list_view_note_item);
+        listView.setAdapter(adapter);
+
+        fab = findViewById(R.id.floatActionButtonAddNote);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertForCreatingNote("Add new Note", "Type a note for " + board.getTitle() + ".");
+            }
+        });
     }
 
     /**********************DIALOGS***********************/
@@ -85,7 +92,7 @@ public class NotesActivity extends AppCompatActivity {
                 if(noteName.length() > 0){
                     createNewNote(noteName);
                 }else {
-                    Toast.makeText(NotesActivity.this, "The notes can`t be empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NotesActivity.this, "The note can't be empty", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -94,6 +101,21 @@ public class NotesActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void createNewNote(String boardName) {
+    /**
+     * Funcion para registrar una Nota de una Board
+     * @param note
+     */
+    private void createNewNote(String note) {
+
+        realm.beginTransaction();
+        Note _note = new Note(note);
+        realm.copyToRealm(_note);
+        board.getNotes().add(_note);
+        realm.commitTransaction();
+    }
+
+    @Override
+    public void onChange(Board board) {
+        adapter.notifyDataSetChanged();
     }
 }

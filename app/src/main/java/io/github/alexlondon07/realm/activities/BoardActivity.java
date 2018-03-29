@@ -20,7 +20,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class BoardActivity extends AppCompatActivity implements RealmChangeListener<Board>, AdapterView.OnItemClickListener{
+public class BoardActivity extends AppCompatActivity implements RealmChangeListener<RealmResults<Board>>, AdapterView.OnItemClickListener{
 
     private Realm realm;
 
@@ -38,14 +38,25 @@ public class BoardActivity extends AppCompatActivity implements RealmChangeListe
         realm = Realm.getDefaultInstance();
         boards = realm.where(Board.class).findAll();
 
-        boardAdapter = new BoardAdapter(this, boards, R.layout.list_view_board);
-        listView = findViewById(R.id.listViewBoard);
-        listView.setAdapter(boardAdapter);
-
         loadView();
+        //deleteAll();
+    }
+
+    private void deleteAll() {
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
     }
 
     private void loadView() {
+
+        boards.addChangeListener(this);
+
+        boardAdapter = new BoardAdapter(this, boards, R.layout.list_view_board);
+        listView = findViewById(R.id.listViewBoard);
+        listView.setAdapter(boardAdapter);
+        listView.setOnItemClickListener(this);
+
         fab = findViewById(R.id.floatActionButtonAdd);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,15 +123,15 @@ public class BoardActivity extends AppCompatActivity implements RealmChangeListe
     }
 
     @Override
-    public void onChange(Board board) {
-        boardAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(BoardActivity.this, NotesActivity.class);
         intent.putExtra("id", boards.get(position).getId());
         startActivity(intent);
+    }
+
+    @Override
+    public void onChange(RealmResults<Board> boards) {
+        boardAdapter.notifyDataSetChanged();
     }
 }
 
