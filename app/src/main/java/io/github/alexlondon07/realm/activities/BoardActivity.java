@@ -1,12 +1,14 @@
 package io.github.alexlondon07.realm.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,9 +17,10 @@ import io.github.alexlondon07.realm.R;
 import io.github.alexlondon07.realm.adapters.BoardAdapter;
 import io.github.alexlondon07.realm.models.Board;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class BoardActivity extends AppCompatActivity {
+public class BoardActivity extends AppCompatActivity implements RealmChangeListener<Board>, AdapterView.OnItemClickListener{
 
     private Realm realm;
 
@@ -106,6 +109,18 @@ public class BoardActivity extends AppCompatActivity {
 
         AlertDialog dialog =  builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onChange(Board board) {
+        boardAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(BoardActivity.this, NotesActivity.class);
+        intent.putExtra("id", boards.get(position).getId());
+        startActivity(intent);
     }
 }
 
