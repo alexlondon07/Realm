@@ -49,7 +49,7 @@ public class BoardActivity extends AppCompatActivity implements RealmChangeListe
 
         boards.addChangeListener(this);
 
-        boardAdapter = new BoardAdapter(this, boards, R.layout.list_view_board);
+        boardAdapter = new BoardAdapter(this, boards, R.layout.list_view_board_item);
         listView = findViewById(R.id.listViewBoard);
         listView.setAdapter(boardAdapter);
         listView.setOnItemClickListener(this);

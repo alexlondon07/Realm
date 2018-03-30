@@ -10,6 +10,9 @@
     <TextView
         android:id="@+id/textViewNoteDescription"
         android:layout_width="match_parent"
+        android:text="Note"
+        android:textSize="14dp"
+        android:textColor="@color/colorPrimary"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -17,6 +20,8 @@
         android:textSize="10dp"
         android:gravity="right"
         android:textStyle="italic"
+        android:text="@string/date"
+        android:textColor="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

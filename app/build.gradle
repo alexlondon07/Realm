@@ -28,4 +28,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:design:26.+'
     apply plugin: 'realm-android'
+
+    compile 'com.android.support:cardview-v7:26.+'
 }
