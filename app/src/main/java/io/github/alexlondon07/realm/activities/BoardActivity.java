@@ -66,13 +66,8 @@ public class BoardActivity extends AppCompatActivity implements RealmChangeListe
     }
 
 
-
     /**********************CRUD ACTIONS***********************/
 
-    /**
-     *
-     * @param boardName
-     */
     private void createNewBoard(String boardName) {
 
         realm.beginTransaction();
@@ -124,14 +119,14 @@ public class BoardActivity extends AppCompatActivity implements RealmChangeListe
         builder.setView(viewInflated);
         final EditText input = viewInflated.findViewById(R.id.editTextBoard);
 
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String boardName = input.getText().toString().trim();
                 if(boardName.length() > 0){
                     createNewBoard(boardName);
                 }else {
-                    Toast.makeText(BoardActivity.this, "The name is required to create a new Board", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BoardActivity.this, R.string.message_edit_name_board, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -153,16 +148,16 @@ public class BoardActivity extends AppCompatActivity implements RealmChangeListe
         final EditText input = viewInflated.findViewById(R.id.editTextBoard);
         input.setText(board.getTitle());
 
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 String boardName = input.getText().toString().trim();
 
                 if(boardName.length() == 0){
-                    Toast.makeText(BoardActivity.this, "The name is required to edit a new Board", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BoardActivity.this, R.string.message_edit_name_board, Toast.LENGTH_LONG).show();
                 }else  if(boardName.equals(board.getTitle())){
-                    Toast.makeText(BoardActivity.this, "The name is the same than it was before", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BoardActivity.this, R.string.message_name_equals, Toast.LENGTH_LONG).show();
                 }else{
                     editBoard(boardName, board);
                 }
@@ -228,17 +223,13 @@ public class BoardActivity extends AppCompatActivity implements RealmChangeListe
 
             case R.id.edit_board:
 
-                showAlertForEditingBoard("Edit Board", "Change the name of the board", boards.get(info.position));
+                showAlertForEditingBoard("Edit Board<", "Change the name of the board", boards.get(info.position));
                 return true;
 
             default:
                 return super.onContextItemSelected(item);
         }
-
     }
-
-
-
 
 }
 
